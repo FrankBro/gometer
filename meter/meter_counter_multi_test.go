@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestCounterMulti_Seq(t *testing.T) {
@@ -25,7 +27,7 @@ func TestCounterMulti_Seq(t *testing.T) {
 		multi.Hit("b")
 
 		values := multi.ReadMeter(1 * time.Second)
-		CheckValues(t, "seq", values, map[string]float64{"a": 3, "b": 3, "c": 1})
+		require.Equal(t, map[string]float64{"a": 3, "b": 3, "c": 1}, values, "seq")
 	}
 }
 
@@ -82,7 +84,7 @@ func TestCounterMulti_Para(t *testing.T) {
 	for i := 0; i < keys; i++ {
 		exp[strconv.Itoa(i)] = float64(increments * workers)
 	}
-	CheckValues(t, "para", result, exp)
+	require.Equal(t, exp, result, "para")
 }
 
 func ReadValuesInto(t *testing.T, multi *MultiCounter, values map[string]float64) {

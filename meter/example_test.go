@@ -3,9 +3,10 @@
 package meter_test
 
 import (
-	"github.com/RAttab/gometer/meter"
+	// "github.com/FrankBro/gometer/meter"
 
 	"fmt"
+	"meter"
 	"sort"
 	"time"
 )

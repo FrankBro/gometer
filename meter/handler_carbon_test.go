@@ -11,6 +11,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestCarbonHandler(t *testing.T) {
@@ -114,7 +116,7 @@ func (carbon *TestCarbon) Expect(title string, exp map[string]float64) {
 		}
 	}
 
-	CheckValues(carbon.T, fmt.Sprintf("%s.%s", title, carbon.Name), values, exp)
+	require.Equal(carbon.T, exp, values, fmt.Sprintf("%s.%s", title, carbon.Name))
 }
 
 func (carbon *TestCarbon) init() {
@@ -124,6 +126,7 @@ func (carbon *TestCarbon) init() {
 	carbon.listenC = make(chan net.Listener)
 	carbon.connC = make(chan net.Conn)
 
+	// nolint SA2002: the goroutine calls T.Fatalf, which must be called in the same goroutine as the test (staticcheck)
 	go carbon.accept()
 
 	listen := <-carbon.listenC
