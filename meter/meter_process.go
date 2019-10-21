@@ -3,10 +3,9 @@
 package meter
 
 import (
-	"github.com/RAttab/goklog/klog"
-
 	"fmt"
 	"io/ioutil"
+	"log"
 	"runtime"
 	"syscall"
 	"time"
@@ -86,7 +85,7 @@ func ProcessStats(prefix string) {
 
 func (meter *process) rusage() (result syscall.Rusage) {
 	if err := syscall.Getrusage(syscall.RUSAGE_SELF, &result); err != nil {
-		klog.KFatalf("meter.process.rusage.error", err.Error())
+		log.Fatal("meter.process.rusage.error", err.Error())
 	}
 	return
 }
@@ -149,12 +148,12 @@ func (meter *process) sampleRusage() {
 func (meter *process) sampleStatm() {
 	body, err := ioutil.ReadFile("/proc/self/statm")
 	if err != nil {
-		klog.KFatalf("meter.process.statm.error", err.Error())
+		log.Fatal("meter.process.statm.error", err.Error())
 	}
 
 	var virt, rss, shared uint64
 	if _, err := fmt.Sscanf(string(body), "%d %d %d", &virt, &rss, &shared); err != nil {
-		klog.KFatalf("meter.process.statm.parse.error", err.Error())
+		log.Fatal("meter.process.statm.parse.error", err.Error())
 	}
 
 	meter.Memory.Resident.Change(float64(rss * 1000))

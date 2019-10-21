@@ -7,6 +7,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 type TestHandler struct {
@@ -47,6 +49,6 @@ func (handler *TestHandler) Get() map[string]float64 {
 }
 
 func (handler *TestHandler) Expect(title string, exp map[string]float64) {
-	CheckValues(handler.T, title, handler.Get(), exp)
+	require.Equal(handler.T, exp, handler.Get(), title)
 	fmt.Printf("handler.expect: %s\n\n", title)
 }

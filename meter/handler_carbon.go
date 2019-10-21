@@ -3,10 +3,9 @@
 package meter
 
 import (
-	"github.com/RAttab/goklog/klog"
-
 	"bufio"
 	"fmt"
+	"log"
 	"net"
 	"sync"
 	"time"
@@ -63,7 +62,7 @@ type msgConn struct {
 
 func (carbon *CarbonHandler) init() {
 	if len(carbon.URLs) == 0 {
-		klog.KFatal("meter.carbon.init.error", "no URL configured")
+		log.Fatal("meter.carbon.init.error", "no URL configured")
 	}
 
 	carbon.connC = make(chan msgConn)
@@ -105,12 +104,12 @@ func (carbon *CarbonHandler) dial(URL string) {
 
 		conn, err := net.DialTimeout("tcp", URL, CarbonDialTimeout)
 		if err == nil {
-			klog.KPrintf("meter.carbon.dial.info", "connected to '%s'", URL)
+			log.Printf("meter.carbon.dial.info: connected to '%s'", URL)
 			carbon.connC <- msgConn{URL, conn}
 			return
 		}
 
-		klog.KPrintf("meter.carbon.dial.error", "unable to connect to '%s': %s", URL, err)
+		log.Printf("meter.carbon.dial.error: unable to connect to '%s': %s", URL, err)
 	}
 }
 
@@ -137,7 +136,7 @@ func (carbon *CarbonHandler) send(values map[string]float64) {
 		}
 
 		if err := carbon.write(conn, values, ts); err != nil {
-			klog.KPrintf("meter.carbon.send.error", "error when sending to '%s': %s", URL, err)
+			log.Printf("meter.carbon.send.error: when sending to '%s': %s", URL, err)
 			carbon.connect(URL)
 		}
 	}
