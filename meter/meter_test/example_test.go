@@ -3,12 +3,11 @@
 package meter_test
 
 import (
-	// "github.com/FrankBro/gometer/meter"
-
 	"fmt"
-	"meter"
 	"sort"
 	"time"
+
+	"github.com/FrankBro/gometer/meter"
 )
 
 // Meters will usually be associated with a service or a component
