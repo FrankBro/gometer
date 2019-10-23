@@ -1,13 +1,12 @@
 // Copyright (c) 2014 Datacratic. All rights reserved.
 
-package meter_test
+package example
 
 import (
 	"fmt"
+	"meter"
 	"sort"
 	"time"
-
-	"github.com/FrankBro/gometer/meter"
 )
 
 // Meters will usually be associated with a service or a component
