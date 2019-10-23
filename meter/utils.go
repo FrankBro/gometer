@@ -75,6 +75,8 @@ func Unload(obj interface{}, prefix string) {
 	})
 }
 
+const tagName = "meter"
+
 func forEachMeter(value reflect.Value, prefix string, fn func(reflect.Value, string)) {
 	if value.Kind() == reflect.Ptr {
 		value = value.Elem()
@@ -86,7 +88,12 @@ func forEachMeter(value reflect.Value, prefix string, fn func(reflect.Value, str
 		field := value.Field(i)
 		fieldEntry := typ.Field(i)
 
-		name := Join(prefix, fieldEntry.Name)
+		var name string
+		if tag := fieldEntry.Tag.Get(tagName); tag != "" {
+			name = Join(prefix, tag)
+		} else {
+			name = Join(prefix, fieldEntry.Name)
+		}
 
 		if field.Kind() == reflect.Struct {
 			forEachMeter(field, name, fn)
