@@ -1,4 +1,4 @@
-module meter
+module github.com/FrankBro/gometer
 
 go 1.13
 
