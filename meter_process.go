@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Datacratic. All rights reserved.
-
 package meter
 
+/*
 import (
 	"fmt"
 	"io/ioutil"
@@ -137,3 +137,4 @@ func (meter *process) sampleStatm() {
 	meter.Memory.Virtual.Change(float64(virt * 1000))
 	meter.Memory.Shared.Change(float64(shared * 1000))
 }
+*/
